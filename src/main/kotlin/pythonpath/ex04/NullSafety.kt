@@ -7,13 +7,19 @@
  *   `String` can never be null. `String?` can be null. The compiler enforces this.
  *   `?.` safe-call: like `x.something if x is not None else None` in one operator.
  *   `?:` Elvis operator: like Python's `x or default`, but only for None (not all falsy values).
+ *   Safe-calls can be chained: `a?.b?.c` — the whole chain short-circuits to null at the first null.
  *   Forgetting to handle null is a compile error, not a runtime AttributeError.
  *
  * PYTHON ANALOGY:
- *   len(s) if s is not None else 0         →  s?.length ?: 0
+ *   len(s) if s is not None else 0            →  s?.length ?: 0
  *   name if name is not None else "stranger"  →  name ?: "stranger"
- *   s.upper() if s else None               →  s?.uppercase()
- *   Optional[str] type hint (not enforced) →  String? (compiler enforced)
+ *   s.upper() if s else None                  →  s?.uppercase()
+ *   Optional[str] type hint (not enforced)    →  String? (compiler enforced)
+ *
+ *   # Chained None checks in Python:
+ *   city = user.address.city.upper() if user and user.address and user.address.city else "UNKNOWN"
+ *   # Kotlin: one clean expression, every step checked by the compiler:
+ *   val city = user?.address?.city?.uppercase() ?: "UNKNOWN"
  *
  *   Key difference: Python's `x or default` triggers on ANY falsy value ("", 0, []).
  *   Kotlin's `x ?: default` triggers ONLY on null.
@@ -32,3 +38,13 @@ fun greetNullable(name: String?): String = TODO()
 
 // Return the first element of the list, or null if the list is empty.
 fun firstOrNull(list: List<Int>): Int? = TODO()
+
+data class Address(val city: String?)
+data class User(val name: String, val address: Address?)
+
+// Return the city of the user's address uppercased, or "UNKNOWN" if the user has no address
+// or the address has no city. Use a single safe-call chain with `?.` and `?:`.
+//   cityOf(User("Alice", Address("Berlin")))  → "BERLIN"
+//   cityOf(User("Bob", Address(null)))        → "UNKNOWN"
+//   cityOf(User("Eve", null))                 → "UNKNOWN"
+fun cityOf(user: User): String = TODO()

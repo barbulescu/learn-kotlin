@@ -35,5 +35,5 @@ fun partitionEvenOdd(numbers: List<Int>): Pair<List<Int>, List<Int>> = TODO()
 fun allWords(sentences: List<String>): List<String> = TODO()
 
 // Pair up elements from two lists by index.
-// zipToMap(["a","b","c"], [1,2,3]) → [("a",1), ("b",2), ("c",3)]
+// zipPairs(["a","b","c"], [1,2,3]) → [("a",1), ("b",2), ("c",3)]
 fun zipPairs(keys: List<String>, values: List<Int>): List<Pair<String, Int>> = TODO()
