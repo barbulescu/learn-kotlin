@@ -14,9 +14,18 @@
  *
  *   create_tag("Hi", cls="btn")   →   createTag("Hi", cls = "btn")
  *
+ *   # Python config objects often use @dataclass or **kwargs factories:
+ *   @dataclass
+ *   class EmailRequest:
+ *       to: str; subject: str; cc: str = ""; priority: int = 3; html: bool = False
+ *   send(EmailRequest(to="alice@example.com", subject="Hi", priority=1))
+ *
+ *   # Kotlin: no wrapper class needed — the function itself carries the defaults:
+ *   sendEmail("alice@example.com", "Hi", priority = 1)
+ *
  *   Differences from Python:
- *   - Parameter types are required: `tag: String`, not just `tag`.
- *   - Kotlin uses camelCase (`createTag`), Python uses snake_case (`create_tag`).
+ *   - Parameter types are required: `to: String`, not just `to`.
+ *   - Kotlin uses camelCase (`sendEmail`), Python uses snake_case (`send_email`).
  *   - `= TODO()` is a stub that throws at runtime — fill it in to make tests pass.
  *
  * DOCS & READING:
@@ -26,11 +35,12 @@
  */
 package pythonpath.ex03
 
-// Build an HTML opening/closing tag pair. Examples:
-//   createTag("Hi")                         → "<div>Hi</div>"
-//   createTag("Hi", tag = "h1")             → "<h1>Hi</h1>"
-//   createTag("Hi", tag = "p", cls = "x")   → "<p class=\"x\">Hi</p>"
-fun createTag(content: String, tag: String = "div", cls: String = ""): String = TODO()
+// Format an email summary string. `cc` defaults to empty, `priority` to 3, `html` to false.
+// sendEmail("alice@example.com", "Hi")
+//   → "To: alice@example.com | Sub: Hi | CC:  | Pri: 3 | HTML: false"
+// sendEmail("b@x.com", "Hey", cc = "c@x.com", priority = 1, html = true)
+//   → "To: b@x.com | Sub: Hey | CC: c@x.com | Pri: 1 | HTML: true"
+fun sendEmail(to: String, subject: String, cc: String = "", priority: Int = 3, html: Boolean = false): String = TODO()
 
 // Repeat a string `times` times, joined by `separator`. Examples:
 //   repeatStr("ha", 3)         → "hahaha"
