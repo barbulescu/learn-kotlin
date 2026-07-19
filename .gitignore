@@ -37,4 +37,5 @@ out/
 
 # Local
 local.properties
+gradle.properties
 .kotlin/

@@ -1,28 +1,35 @@
 # learn-kotlin
 
-Kotlin exercises for developers coming from Java or Python. Each exercise is a file of `TODO()` stubs; your job is to make the pre-written tests pass. Two learning paths cover the same concepts using different analogies — pick the one that matches your background.
+Kotlin exercises for developers coming from Java. Each exercise is a file of `TODO()` stubs; your job is to make the pre-written tests pass.
 
 ## Setup
 
-Requires **JDK 21** and **Gradle**. Generate the wrapper once:
+No prerequisites beyond a JDK on your PATH to bootstrap Gradle — the wrapper is included, and the [Foojay toolchain resolver](https://github.com/gradle/foojay-toolchains) auto-downloads JDK 21 if you don't have it:
 
 ```bash
-gradle wrapper
+./gradlew test
 ```
 
 ## Running Tests
 
 ```bash
-./gradlew test                              # all exercises, both paths
-./gradlew test --tests "javapath.*"         # Java path only
-./gradlew test --tests "pythonpath.*"       # Python path only
-./gradlew test --tests "*.ex03.*"           # one exercise, both paths
-./gradlew test --tests "javapath.ex03.*"    # one exercise, one path
+./gradlew test                      # all exercises
+./gradlew test --tests "ex03.*"     # one exercise
 ```
+
+A fresh clone starts **red**: every stub is `TODO()`, so its tests fail with `NotImplementedError` until you implement the function. Work one exercise at a time and re-run its tests until they pass.
+
+## Suggested Route (2-hour dojo)
+
+Exercises are ordered by how strongly they make the case for Kotlin, so just work through them in sequence. Budget **~10 minutes per exercise** including reading the header. The tiers below set expectations:
+
+- **Core (ex01–ex06)** — the "convince me" exercises. Null safety (ex03) and data classes (ex04) are the strongest arguments for Kotlin; everyone should reach them. Core fills the first hour.
+- **Stretch (ex07–ex10)** — idioms that make everyday code shorter. Do as many as time allows in the second hour.
+- **Advanced (ex11–ex15)** — take these home; they're the reward for finishing, not part of the 2-hour session.
 
 ---
 
-## Week 1 — The Basics
+## Core — the "convince me" exercises (ex01–ex06)
 
 ### ex01 · `val`, `var`, and Type Inference
 
@@ -43,23 +50,22 @@ Instead of concatenation or `String.format()`, Kotlin lets you embed values dire
 
 ---
 
-### ex03 · Default Parameters and Named Arguments
-
-Kotlin functions can declare default values for any parameter, eliminating the clusters of overloaded methods that Java requires for optional arguments. Callers can also pass arguments by name — `sendEmail("alice@example.com", "Hi", priority = 1)` — allowing them to skip parameters in the middle or reorder for clarity. This is the idiomatic replacement for the Builder pattern. The exercise also introduces single-expression functions (`fun f() = ...`), the preferred style for one-liners.
-
-- [Default arguments](https://kotlinlang.org/docs/functions.html#default-arguments)
-- [Named arguments](https://kotlinlang.org/docs/functions.html#named-arguments)
-- [Single-expression functions](https://kotlinlang.org/docs/functions.html#single-expression-functions)
-
----
-
-### ex04 · Null Safety
+### ex03 · Null Safety
 
 Nullable types are part of Kotlin's type system: `String` can never be `null`, but `String?` can. The compiler refuses to compile code that dereferences a nullable without a check, eliminating the NullPointerException surprises that plague Java code. The safe-call operator `?.` short-circuits the chain to `null` at the first missing value; the Elvis operator `?:` supplies a fallback. You will chain these together in `cityOf` — a single expression that navigates `User → Address → city` and uppercases the result, all without a single `if`.
 
 - [Null safety](https://kotlinlang.org/docs/null-safety.html)
 - [Java-to-Kotlin nullability guide](https://kotlinlang.org/docs/java-to-kotlin-nullability-guide.html)
 - [Idioms: if-not-null shorthand](https://kotlinlang.org/docs/idioms.html#if-not-null-shorthand)
+
+---
+
+### ex04 · Data Classes
+
+`data class` gives you `equals()`, `hashCode()`, `toString()`, and `copy()` for free, based on the properties declared in the constructor. It is the Kotlin equivalent of Java 16+ records, but with one killer feature Java lacks: `copy()`, which creates an immutable clone with specific fields changed — `person.copy(age = 31)`. Destructuring (`val (name, age) = person`) unpacks properties in declaration order. The exercise covers all three patterns: comparison, `copy`, and string formatting.
+
+- [Data classes](https://kotlinlang.org/docs/data-classes.html)
+- [Destructuring declarations](https://kotlinlang.org/docs/destructuring-declarations.html)
 
 ---
 
@@ -72,27 +78,19 @@ Nullable types are part of Kotlin's type system: `String` can never be `null`, b
 
 ---
 
-## Week 2 — Idioms and Collections
+### ex06 · Default Parameters and Named Arguments
 
-### ex06 · Data Classes
+Kotlin functions can declare default values for any parameter, eliminating the clusters of overloaded methods that Java requires for optional arguments. Callers can also pass arguments by name — `sendEmail("alice@example.com", "Hi", priority = 1)` — allowing them to skip parameters in the middle or reorder for clarity. This is the idiomatic replacement for the Builder pattern. The exercise also introduces single-expression functions (`fun f() = ...`), the preferred style for one-liners.
 
-`data class` gives you `equals()`, `hashCode()`, `toString()`, and `copy()` for free, based on the properties declared in the constructor. It is the Kotlin equivalent of Java 16+ records, but with one killer feature Java lacks: `copy()`, which creates an immutable clone with specific fields changed — `person.copy(age = 31)`. Destructuring (`val (name, age) = person`) unpacks properties in declaration order. The exercise covers all three patterns: comparison, `copy`, and string formatting.
-
-- [Data classes](https://kotlinlang.org/docs/data-classes.html)
-- [Destructuring declarations](https://kotlinlang.org/docs/destructuring-declarations.html)
-
----
-
-### ex07 · Ranges and `for` Loops
-
-Kotlin replaces the verbose `for (int i = 0; i < n; i++)` with concise range expressions: `1..10` (inclusive), `0 until 10` (exclusive), `10 downTo 1` (reversed), and `1..10 step 3` (custom stride). Ranges also work with `in` for membership checks: `n in 1..10`. The same range objects are reusable in `for` loops, `when` branches, and collection operations. The three functions here — `sumRange`, `countdown`, and `everyNth` — exercise all four range forms.
-
-- [Ranges](https://kotlinlang.org/docs/ranges.html)
-- [for loops](https://kotlinlang.org/docs/control-flow.html#for-loops)
+- [Default arguments](https://kotlinlang.org/docs/functions.html#default-arguments)
+- [Named arguments](https://kotlinlang.org/docs/functions.html#named-arguments)
+- [Single-expression functions](https://kotlinlang.org/docs/functions.html#single-expression-functions)
 
 ---
 
-### ex08 · Extension Functions
+## Stretch — everyday idioms (ex07–ex10)
+
+### ex07 · Extension Functions
 
 Extension functions let you add new methods to an existing type — even one from the standard library or a third-party jar — without subclassing or wrapping it. Inside the function, `this` refers to the receiver (the value before the dot). This makes `"racecar".isPalindrome()` possible even though `String` never declared that method. Extension functions are resolved statically, so they are a drop-in replacement for Java utility classes (`StringUtils`, `CollectionUtils`, etc.) with a much nicer call site.
 
@@ -101,7 +99,7 @@ Extension functions let you add new methods to an existing type — even one fro
 
 ---
 
-### ex09 · Lambdas and Higher-Order Functions
+### ex08 · Lambdas and Higher-Order Functions
 
 A lambda in Kotlin is written as `{ x -> x * 2 }`, or `{ it * 2 }` when there is exactly one parameter (`it` is the implicit name). Higher-order functions accept or return other functions — their parameter type is written like `(Int) -> Int`. When the last argument to a function is a lambda, it can be moved outside the parentheses (trailing lambda syntax), which is why `applyTwice(3) { it + 1 }` reads naturally. There is no `@FunctionalInterface` boilerplate; any function type works directly.
 
@@ -111,7 +109,7 @@ A lambda in Kotlin is written as `{ x -> x * 2 }`, or `{ it * 2 }` when there is
 
 ---
 
-### ex10 · Collections: `map`, `filter`, `fold`, `maxByOrNull`
+### ex09 · Collections: `map`, `filter`, `fold`, `maxByOrNull`
 
 Kotlin's collection API is built from extension functions, so `map`, `filter`, and `fold` call directly on a `List` — no `.stream()`, no `.collect()`. `map { }` transforms each element; `filter { }` keeps elements matching a predicate; `fold(initial) { acc, el -> }` accumulates a value from left to right (equivalent to Java's `reduce` with a seed); `maxByOrNull { }` returns the largest element by a key, or `null` for an empty list. Getting fluent with these four operations covers the vast majority of everyday collection processing.
 
@@ -122,7 +120,16 @@ Kotlin's collection API is built from extension functions, so `map`, `filter`, a
 
 ---
 
-## Week 3 — Advanced Patterns
+### ex10 · Ranges and `for` Loops
+
+Kotlin replaces the verbose `for (int i = 0; i < n; i++)` with concise range expressions: `1..10` (inclusive), `0 until 10` (exclusive), `10 downTo 1` (reversed), and `1..10 step 3` (custom stride). Ranges also work with `in` for membership checks: `n in 1..10`. The same range objects are reusable in `for` loops, `when` branches, and collection operations. The three functions here — `sumRange`, `countdown`, and `everyNth` — exercise all four range forms.
+
+- [Ranges](https://kotlinlang.org/docs/ranges.html)
+- [for loops](https://kotlinlang.org/docs/control-flow.html#for-loops)
+
+---
+
+## Advanced — after the session (ex11–ex15)
 
 ### ex11 · Sealed Classes and Exhaustive `when`
 

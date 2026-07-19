@@ -4,62 +4,50 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Kotlin exercises for developers coming from Java or Python. Two learning paths cover the same concepts but use different analogies and comments. Each exercise is a `TODO()` stub; the learner makes the pre-written tests pass.
+Kotlin exercises for developers coming from Java. Each exercise is a `TODO()` stub; the learner makes the pre-written tests pass.
 
 ## Setup
 
-Requires JDK 21 and Gradle. Generate the wrapper once:
-```bash
-gradle wrapper
-```
+The Gradle wrapper is committed and the Foojay toolchain resolver (settings.gradle.kts) auto-provisions JDK 21 — use `./gradlew` directly; no local Gradle or JDK 21 install is needed.
 
 ## Build & Test
 
 ```bash
-./gradlew test                              # run all tests
-./gradlew test --tests "javapath.*"         # Java path only
-./gradlew test --tests "pythonpath.*"       # Python path only
-./gradlew test --tests "*.ex03.*"           # one exercise, both paths
-./gradlew test --tests "javapath.ex03.*"    # one exercise, one path
+./gradlew test                      # run all tests
+./gradlew test --tests "ex03.*"     # one exercise
 ```
 
 ## Structure
 
 ```
 src/
-  main/kotlin/
-    javapath/exNN/    # stubs with Java analogies and docs
-    pythonpath/exNN/  # same stubs, Python analogies and docs
-  test/kotlin/
-    javapath/exNN/    # tests import from javapath
-    pythonpath/exNN/  # identical tests, import from pythonpath
+  main/kotlin/exNN/   # stubs with Java analogies and docs
+  test/kotlin/exNN/   # pre-written tests
 ```
-
-Tests are identical between paths — only the package import differs.
 
 ## Adding an Exercise
 
-1. Create `src/main/kotlin/javapath/exNN/Topic.kt` with `TODO()` stubs and a header comment block (theory, analogy, doc links).
-2. Copy to `src/main/kotlin/pythonpath/exNN/Topic.kt` and swap the analogy section.
-3. Create `src/test/kotlin/javapath/exNN/TopicTest.kt`.
-4. Copy to `src/test/kotlin/pythonpath/exNN/TopicTest.kt` and change only the package line.
+1. Create `src/main/kotlin/exNN/Topic.kt` with `TODO()` stubs and a header comment block (theory, Java analogy, doc links).
+2. Create `src/test/kotlin/exNN/TopicTest.kt`.
 
 ## Curriculum
 
-| Exercise | Week | Concept |
+Exercises are ordered by "convince factor" for a 2-hour dojo: core (ex01–ex06) makes the case for Kotlin, stretch (ex07–ex10) fills the second hour, advanced (ex11–ex15) is homework.
+
+| Exercise | Tier | Concept |
 |----------|------|---------|
-| ex01 | 1 | `val`/`var`, type inference |
-| ex02 | 1 | String templates |
-| ex03 | 1 | Default parameters, named arguments |
-| ex04 | 1 | Null safety (`?`, `?.`, `?:`) |
-| ex05 | 1 | `when` as expression |
-| ex06 | 2 | Data classes (`copy`, destructuring, structural equality) |
-| ex07 | 2 | Ranges and `for` loops (`..`, `downTo`, `step`, `until`) |
-| ex08 | 2 | Extension functions |
-| ex09 | 2 | Lambdas and higher-order functions (`it`, trailing lambda) |
-| ex10 | 2 | Collections: `map`, `filter`, `fold`, `maxByOrNull` |
-| ex11 | 3 | Sealed classes + exhaustive `when` |
-| ex12 | 3 | `object` singletons and `companion object` factories |
-| ex13 | 3 | Scope functions: `let`, `apply`, `also`, `run` |
-| ex14 | 3 | Advanced collections: `groupBy`, `partition`, `flatMap`, `zip` |
-| ex15 | 3 | Coroutines: `suspend`, `async`/`await`, `delay`, `coroutineScope` |
+| ex01 | core | `val`/`var`, type inference |
+| ex02 | core | String templates |
+| ex03 | core | Null safety (`?`, `?.`, `?:`) |
+| ex04 | core | Data classes (`copy`, destructuring, structural equality) |
+| ex05 | core | `when` as expression |
+| ex06 | core | Default parameters, named arguments |
+| ex07 | stretch | Extension functions |
+| ex08 | stretch | Lambdas and higher-order functions (`it`, trailing lambda) |
+| ex09 | stretch | Collections: `map`, `filter`, `fold`, `maxByOrNull` |
+| ex10 | stretch | Ranges and `for` loops (`..`, `downTo`, `step`, `until`) |
+| ex11 | advanced | Sealed classes + exhaustive `when` |
+| ex12 | advanced | `object` singletons and `companion object` factories |
+| ex13 | advanced | Scope functions: `let`, `apply`, `also`, `run` |
+| ex14 | advanced | Advanced collections: `groupBy`, `partition`, `flatMap`, `zip` |
+| ex15 | advanced | Coroutines: `suspend`, `async`/`await`, `delay`, `coroutineScope` |
