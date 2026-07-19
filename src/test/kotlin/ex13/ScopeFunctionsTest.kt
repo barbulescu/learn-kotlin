@@ -37,11 +37,8 @@ class ScopeFunctionsTest {
     }
 
     @Test
-    fun `distinctCharCount of hello is 4`() = assertEquals(4, distinctCharCount("hello"))
+    fun `summarize kotlin`() = assertEquals("kotlin has 6 chars, first k, last n", summarize("kotlin"))
 
     @Test
-    fun `distinctCharCount of aabbcc is 3`() = assertEquals(3, distinctCharCount("aabbcc"))
-
-    @Test
-    fun `distinctCharCount of a is 1`() = assertEquals(1, distinctCharCount("a"))
+    fun `summarize hi`() = assertEquals("hi has 2 chars, first h, last i", summarize("hi"))
 }

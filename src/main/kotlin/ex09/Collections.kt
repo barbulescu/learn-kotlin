@@ -30,6 +30,7 @@ fun doubleAll(numbers: List<Int>): List<Int> = TODO()
 fun onlyEven(numbers: List<Int>): List<Int> = TODO()
 
 // Return the sum of all numbers using `fold`.
+// (`numbers.sum()` also passes the test — but the accumulator lambda is the point here.)
 fun sumAll(numbers: List<Int>): Int = TODO()
 
 // Return the longest word, or null if the list is empty.

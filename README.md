@@ -19,6 +19,8 @@ No prerequisites beyond a JDK on your PATH to bootstrap Gradle — the wrapper i
 
 A fresh clone starts **red**: every stub is `TODO()`, so its tests fail with `NotImplementedError` until you implement the function. Work one exercise at a time and re-run its tests until they pass.
 
+Two stub shapes: `fun f() = TODO()` wants a single expression (`fun f() = "result"`), while `fun f() { TODO() }` gives you a block body for statements like loops (replace `TODO()` with your code and `return` the result). You can convert between them freely — the block form is pre-set where a loop is the intended solution.
+
 ## Suggested Route (2-hour dojo)
 
 Exercises are ordered by how strongly they make the case for Kotlin, so just work through them in sequence. Budget **~10 minutes per exercise** including reading the header. The tiers below set expectations:

@@ -28,9 +28,17 @@ package ex08
 fun applyTwice(x: Int, f: (Int) -> Int): Int = TODO()
 
 // Return a new list containing only elements for which predicate returns true.
+// Build it by hand with a loop and a mutableListOf — you are implementing `filter` yourself
+// to see how a function parameter is called. (`list.filter` would pass the test but defeat
+// the point; you'll meet the real thing in ex09.)
 // keepIf(listOf(1,2,3,4)) { it % 2 == 0 } → [2, 4]
-fun <T> keepIf(list: List<T>, predicate: (T) -> Boolean): List<T> = TODO()
+fun <T> keepIf(list: List<T>, predicate: (T) -> Boolean): List<T> {
+    TODO()
+}
 
 // Apply f to every element and return the resulting list.
+// Again by hand with a loop — this is `map` built yourself; the stdlib version arrives in ex09.
 // transformAll(listOf("hi", "bye")) { it.uppercase() } → ["HI", "BYE"]
-fun <T, R> transformAll(list: List<T>, f: (T) -> R): List<R> = TODO()
+fun <T, R> transformAll(list: List<T>, f: (T) -> R): List<R> {
+    TODO()
+}

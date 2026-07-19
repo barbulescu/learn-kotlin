@@ -24,10 +24,14 @@ package ex12
 
 object MathUtils {
     // Return n! (factorial). Assume n >= 0. factorial(0) = 1.
-    fun factorial(n: Int): Long = TODO()
+    fun factorial(n: Int): Long {
+        TODO()
+    }
 
     // Return true if n is a prime number. Assume n >= 0.
-    fun isPrime(n: Int): Boolean = TODO()
+    fun isPrime(n: Int): Boolean {
+        TODO()
+    }
 }
 
 class Temperature(val celsius: Double) {

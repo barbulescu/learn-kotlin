@@ -33,5 +33,6 @@ fun String.isPalindrome(): Boolean = TODO()
 fun Int.isEven(): Boolean = TODO()
 
 // Return the number of words (split by one or more whitespace characters).
+// The input always contains at least one word — no need to handle empty or blank strings.
 // "hello world".wordCount() → 2,  "  hi  there  ".wordCount() → 2
 fun String.wordCount(): Int = TODO()

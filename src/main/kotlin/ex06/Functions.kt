@@ -47,3 +47,9 @@ fun sendEmail(to: String, subject: String, cc: String = "", priority: Int = 3, h
 //   repeatStr("ha", 3)         → "hahaha"
 //   repeatStr("ha", 3, "-")    → "ha-ha-ha"
 fun repeatStr(s: String, times: Int, separator: String = ""): String = TODO()
+
+// Now be the caller: implement this with a SINGLE call to sendEmail, using a named
+// argument to set priority = 1 and letting every other optional parameter use its default.
+// Don't build the string yourself.
+// urgentEmail("a@x.com", "Server down") → "To: a@x.com | Sub: Server down | CC:  | Pri: 1 | HTML: false"
+fun urgentEmail(to: String, subject: String): String = TODO()

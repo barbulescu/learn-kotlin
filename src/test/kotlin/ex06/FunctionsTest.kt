@@ -32,4 +32,12 @@ class FunctionsTest {
     @Test
     fun `repeatStr once`() =
         assertEquals("x", repeatStr("x", 1))
+
+    @Test
+    fun `urgentEmail sets priority 1 and keeps other defaults`() =
+        assertEquals("To: a@x.com | Sub: Server down | CC:  | Pri: 1 | HTML: false", urgentEmail("a@x.com", "Server down"))
+
+    @Test
+    fun `urgentEmail works for any recipient`() =
+        assertEquals("To: ops@x.com | Sub: Disk full | CC:  | Pri: 1 | HTML: false", urgentEmail("ops@x.com", "Disk full"))
 }

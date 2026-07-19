@@ -13,6 +13,9 @@
  *   | also     | it       | the object     | Side effects in a chain (logging)    |
  *   | with     | this     | lambda result  | Operate on an object (non-extension) |
  *
+ * NOTE: The tests only check return values — they cannot verify which scope function you
+ * used. Each stub below names the one to practice; using it is the point of the exercise.
+ *
  * JAVA ANALOGY:
  *   nullable?.let { transform(it) } ?: default   →  Optional.ofNullable(x).map(...).orElse(default)
  *   obj.apply { field = value }                  →  Builder pattern / fluent setters
@@ -36,6 +39,7 @@ fun defaultConfig(): HashMap<String, String> = TODO()
 // to `log`, then return the sum.
 fun sumWithLog(numbers: List<Int>, log: MutableList<String>): Int = TODO()
 
-// Use `run` on the string to count how many distinct characters it contains.
-// "hello" → 4  (h, e, l, o)
-fun distinctCharCount(s: String): Int = TODO()
+// Use `run` on the string to build a one-line summary from several of its members —
+// inside the block, `this` is the string, so `length`, `first()`, and `last()` resolve directly.
+// summarize("kotlin") → "kotlin has 6 chars, first k, last n"
+fun summarize(s: String): String = TODO()
