@@ -22,8 +22,10 @@ package ex01
 
 // Sum all integers from 1 to n (inclusive). Use a `var` accumulator inside a loop.
 fun sumUpTo(n: Int): Int {
-    TODO()
+    var sum = 0
+    for (i in 1..n) sum += i
+    return sum
 }
 
 // Return initials like "J.D." given firstName = "John" and lastName = "Doe".
-fun initials(firstName: String, lastName: String): String = TODO()
+fun initials(firstName: String, lastName: String): String = "${firstName.first()}.${lastName.first()}."

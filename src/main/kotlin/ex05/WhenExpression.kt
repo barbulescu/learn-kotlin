@@ -25,11 +25,24 @@
 package ex05
 
 // Classify an integer: "negative", "zero", "small" (1..9), or "large" (>= 10).
-fun classify(n: Int): String = TODO()
+fun classify(n: Int): String = when {
+    n < 0 -> "negative"
+    n == 0 -> "zero"
+    n in 1..9 -> "small"
+    else -> "large"
+}
 
 // Map day number (1 = Monday .. 7 = Sunday) to "weekday" or "weekend".
 // `day` is always in 1..7 — no need to handle other values.
-fun dayType(day: Int): String = TODO()
+fun dayType(day: Int): String = when (day) {
+    in 1..5 -> "weekday"
+    else -> "weekend"
+}
 
 // Classic FizzBuzz: return "Fizz" (÷3), "Buzz" (÷5), "FizzBuzz" (÷both), or the number as a string.
-fun fizzBuzz(n: Int): String = TODO()
+fun fizzBuzz(n: Int): String = when {
+    n % 15 == 0 -> "FizzBuzz"
+    n % 3 == 0 -> "Fizz"
+    n % 5 == 0 -> "Buzz"
+    else -> n.toString()
+}

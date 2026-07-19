@@ -24,15 +24,17 @@ package ex10
 
 // Sum all integers from `from` to `to` inclusive using a for loop and a range.
 fun sumRange(from: Int, to: Int): Int {
-    TODO()
+    var sum = 0
+    for (i in from..to) sum += i
+    return sum
 }
 
 // Return a list counting down from `n` to 1 (inclusive) using `downTo`.
 // countdown(5) → [5, 4, 3, 2, 1]
-fun countdown(n: Int): List<Int> = TODO()
+fun countdown(n: Int): List<Int> = (n downTo 1).toList()
 
 // Return a list of integers from `from` to `to` (inclusive), advancing by `interval` each
 // time — the infix `step` function is what you're practicing here. `interval` is always >= 1;
 // if it overshoots `to`, the range simply ends earlier.
 // everyNth(1, 10, 3) → [1, 4, 7, 10]
-fun everyNth(from: Int, to: Int, interval: Int): List<Int> = TODO()
+fun everyNth(from: Int, to: Int, interval: Int): List<Int> = (from..to step interval).toList()

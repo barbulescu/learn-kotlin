@@ -41,15 +41,16 @@ package ex06
 //   → "To: alice@example.com | Sub: Hi | CC:  | Pri: 3 | HTML: false"
 // sendEmail("b@x.com", "Hey", cc = "c@x.com", priority = 1, html = true)
 //   → "To: b@x.com | Sub: Hey | CC: c@x.com | Pri: 1 | HTML: true"
-fun sendEmail(to: String, subject: String, cc: String = "", priority: Int = 3, html: Boolean = false): String = TODO()
+fun sendEmail(to: String, subject: String, cc: String = "", priority: Int = 3, html: Boolean = false): String =
+    "To: $to | Sub: $subject | CC: $cc | Pri: $priority | HTML: $html"
 
 // Repeat a string `times` times, joined by `separator`. Examples:
 //   repeatStr("ha", 3)         → "hahaha"
 //   repeatStr("ha", 3, "-")    → "ha-ha-ha"
-fun repeatStr(s: String, times: Int, separator: String = ""): String = TODO()
+fun repeatStr(s: String, times: Int, separator: String = ""): String = List(times) { s }.joinToString(separator)
 
 // Now be the caller: implement this with a SINGLE call to sendEmail, using a named
 // argument to set priority = 1 and letting every other optional parameter use its default.
 // Don't build the string yourself.
 // urgentEmail("a@x.com", "Server down") → "To: a@x.com | Sub: Server down | CC:  | Pri: 1 | HTML: false"
-fun urgentEmail(to: String, subject: String): String = TODO()
+fun urgentEmail(to: String, subject: String): String = sendEmail(to, subject, priority = 1)

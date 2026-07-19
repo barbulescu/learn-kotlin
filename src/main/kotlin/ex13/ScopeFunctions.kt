@@ -29,19 +29,23 @@ package ex13
 
 // Use `let` to safely process a nullable string: trim it and uppercase it,
 // or return "NONE" if the input is null.
-fun processInput(input: String?): String = TODO()
+fun processInput(input: String?): String = input?.let { it.trim().uppercase() } ?: "NONE"
 
 // Use `apply` to build and return a HashMap<String, String> containing:
 // "host" → "localhost", "port" → "8080", "debug" → "true"
 // Inside the block, prefer Kotlin's indexed assignment over put():
 //   this["host"] = "localhost"
-fun defaultConfig(): HashMap<String, String> = TODO()
+fun defaultConfig(): HashMap<String, String> = HashMap<String, String>().apply {
+    this["host"] = "localhost"
+    this["port"] = "8080"
+    this["debug"] = "true"
+}
 
 // Use `also` to add a side effect: compute the sum of `numbers`, append "sum=<result>"
 // to `log`, then return the sum.
-fun sumWithLog(numbers: List<Int>, log: MutableList<String>): Int = TODO()
+fun sumWithLog(numbers: List<Int>, log: MutableList<String>): Int = numbers.sum().also { log.add("sum=$it") }
 
 // Use `run` on the string to build a one-line summary from several of its members —
 // inside the block, `this` is the string, so `length`, `first()`, and `last()` resolve directly.
 // summarize("kotlin") → "kotlin has 6 chars, first k, last n"
-fun summarize(s: String): String = TODO()
+fun summarize(s: String): String = s.run { "$this has $length chars, first ${first()}, last ${last()}" }

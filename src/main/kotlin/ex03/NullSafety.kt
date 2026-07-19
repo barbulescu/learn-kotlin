@@ -29,13 +29,13 @@
 package ex03
 
 // Return the length of s, or 0 if s is null.
-fun safeLength(s: String?): Int = TODO()
+fun safeLength(s: String?): Int = s?.length ?: 0
 
 // Return "Hello, <name>!" or "Hello, stranger!" if name is null.
-fun greetNullable(name: String?): String = TODO()
+fun greetNullable(name: String?): String = "Hello, ${name ?: "stranger"}!"
 
 // Return the first element of the list, or null if the list is empty.
-fun firstOrNull(list: List<Int>): Int? = TODO()
+fun firstOrNull(list: List<Int>): Int? = list.firstOrNull()
 
 data class Address(val city: String?)
 data class User(val name: String, val address: Address?)
@@ -45,4 +45,4 @@ data class User(val name: String, val address: Address?)
 //   cityOf(User("Alice", Address("Berlin")))  → "BERLIN"
 //   cityOf(User("Bob", Address(null)))        → "UNKNOWN"
 //   cityOf(User("Eve", null))                 → "UNKNOWN"
-fun cityOf(user: User): String = TODO()
+fun cityOf(user: User): String = user.address?.city?.uppercase() ?: "UNKNOWN"

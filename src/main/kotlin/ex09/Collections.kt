@@ -24,14 +24,14 @@
 package ex09
 
 // Return a new list where every element is doubled.
-fun doubleAll(numbers: List<Int>): List<Int> = TODO()
+fun doubleAll(numbers: List<Int>): List<Int> = numbers.map { it * 2 }
 
 // Return only the even numbers.
-fun onlyEven(numbers: List<Int>): List<Int> = TODO()
+fun onlyEven(numbers: List<Int>): List<Int> = numbers.filter { it % 2 == 0 }
 
 // Return the sum of all numbers using `fold`.
 // (`numbers.sum()` also passes the test — but the accumulator lambda is the point here.)
-fun sumAll(numbers: List<Int>): Int = TODO()
+fun sumAll(numbers: List<Int>): Int = numbers.fold(0) { acc, n -> acc + n }
 
 // Return the longest word, or null if the list is empty.
-fun longestWord(words: List<String>): String? = TODO()
+fun longestWord(words: List<String>): String? = words.maxByOrNull { it.length }

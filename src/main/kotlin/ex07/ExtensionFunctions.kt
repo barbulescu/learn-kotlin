@@ -27,14 +27,14 @@ package ex07
 
 // Return true if the string reads the same forwards and backwards (case-sensitive).
 // "racecar".isPalindrome() → true,  "hello".isPalindrome() → false
-fun String.isPalindrome(): Boolean = TODO()
+fun String.isPalindrome(): Boolean = this == reversed()
 
 // Return true if the integer is even.
-fun Int.isEven(): Boolean = TODO()
+fun Int.isEven(): Boolean = this % 2 == 0
 
 // Return the number of words (split by one or more whitespace characters).
 // The input always contains at least one word — no need to handle empty or blank strings.
 // Hint: split(Regex("""\s+""")) — Regex is Kotlin's regex class, and triple quotes make a
 // raw string, so the backslash needs no escaping (Java would need "\\s+").
 // "hello world".wordCount() → 2,  "  hi  there  ".wordCount() → 2
-fun String.wordCount(): Int = TODO()
+fun String.wordCount(): Int = trim().split(Regex("""\s+""")).size

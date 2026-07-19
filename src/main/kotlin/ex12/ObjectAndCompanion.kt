@@ -25,24 +25,32 @@ package ex12
 object MathUtils {
     // Return n! (factorial). Assume n >= 0. factorial(0) = 1.
     fun factorial(n: Int): Long {
-        TODO()
+        var result = 1L
+        for (i in 1..n) result *= i
+        return result
     }
 
     // Return true if n is a prime number. Assume n >= 0.
     fun isPrime(n: Int): Boolean {
-        TODO()
+        if (n < 2) return false
+        var i = 2
+        while (i * i <= n) {
+            if (n % i == 0) return false
+            i++
+        }
+        return true
     }
 }
 
 class Temperature(val celsius: Double) {
     companion object {
         // Create a Temperature from a Fahrenheit value. Formula: (f - 32) * 5 / 9
-        fun fromFahrenheit(f: Double): Temperature = TODO()
+        fun fromFahrenheit(f: Double): Temperature = Temperature((f - 32) * 5 / 9)
 
         // Return the boiling point of water (100°C).
-        fun boiling(): Temperature = TODO()
+        fun boiling(): Temperature = Temperature(100.0)
     }
 
     // Convert this temperature to Fahrenheit. Formula: celsius * 9 / 5 + 32
-    fun toFahrenheit(): Double = TODO()
+    fun toFahrenheit(): Double = celsius * 9 / 5 + 32
 }

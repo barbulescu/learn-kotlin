@@ -28,10 +28,10 @@ package ex04
 data class Person(val name: String, val age: Int)
 
 // Return the younger of the two people. If ages are equal, return `a`.
-fun younger(a: Person, b: Person): Person = TODO()
+fun younger(a: Person, b: Person): Person = if (a.age <= b.age) a else b
 
 // Return a new Person with age incremented by 1. Use `.copy()`.
-fun birthday(p: Person): Person = TODO()
+fun birthday(p: Person): Person = p.copy(age = p.age + 1)
 
 // Return "<name> is <age> years old".
-fun describe(p: Person): String = TODO()
+fun describe(p: Person): String = "${p.name} is ${p.age} years old"

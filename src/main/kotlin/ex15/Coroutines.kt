@@ -27,10 +27,18 @@ package ex15
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.milliseconds
 
 // Suspend function: wait 50ms, then return "Hello, <name>!".
-suspend fun fetchGreeting(name: String): String = TODO()
+suspend fun fetchGreeting(name: String): String {
+    delay(50.milliseconds)
+    return "Hello, $name!"
+}
 
 // Launch two fetchGreeting calls concurrently using `async`/`await` inside `coroutineScope`.
 // Return both results as a Pair — they should run in parallel, not sequentially.
-suspend fun fetchBoth(first: String, second: String): Pair<String, String> = TODO()
+suspend fun fetchBoth(first: String, second: String): Pair<String, String> = coroutineScope {
+    val a = async { fetchGreeting(first) }
+    val b = async { fetchGreeting(second) }
+    a.await() to b.await()
+}

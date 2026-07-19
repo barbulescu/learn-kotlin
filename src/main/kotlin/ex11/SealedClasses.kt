@@ -36,6 +36,8 @@
  */
 package ex11
 
+import kotlin.math.PI
+
 sealed class Shape
 data class Circle(val radius: Double) : Shape()
 data class Rectangle(val width: Double, val height: Double) : Shape()
@@ -45,13 +47,21 @@ data class Triangle(val base: Double, val height: Double) : Shape()
 // Circle: π * r²  |  Rectangle: w * h  |  Triangle: (base * height) / 2
 // For π use `kotlin.math.PI` — yes, Kotlin lets you import a bare top-level constant
 // (`import kotlin.math.PI`), no wrapper class like Java's Math needed.
-fun area(shape: Shape): Double = TODO()
+fun area(shape: Shape): Double = when (shape) {
+    is Circle -> PI * shape.radius * shape.radius
+    is Rectangle -> shape.width * shape.height
+    is Triangle -> shape.base * shape.height / 2
+}
 
 // Return a human-readable description.
 // Circle(2.0) → "Circle with radius 2.0"
 // Rectangle(3.0, 5.0) → "Rectangle 3.0 x 5.0"
 // Triangle(5.0, 3.0) → "Triangle with base 5.0 and height 3.0"
-fun describe(shape: Shape): String = TODO()
+fun describe(shape: Shape): String = when (shape) {
+    is Circle -> "Circle with radius ${shape.radius}"
+    is Rectangle -> "Rectangle ${shape.width} x ${shape.height}"
+    is Triangle -> "Triangle with base ${shape.base} and height ${shape.height}"
+}
 
 // Scale the shape by the given factor and return a new Shape.
 // Only Circle and Rectangle can be scaled — multiply their size properties by `factor`.
@@ -62,4 +72,8 @@ fun describe(shape: Shape): String = TODO()
 //   scaleUp(Triangle(5.0, 3.0), 2.0)  → Triangle(5.0, 3.0)
 // Hint: use `is Circle` — the compiler smart-casts `shape` so you can access `shape.radius`
 // directly inside that branch without any explicit cast.
-fun scaleUp(shape: Shape, factor: Double): Shape = TODO()
+fun scaleUp(shape: Shape, factor: Double): Shape = when (shape) {
+    is Circle -> Circle(shape.radius * factor)
+    is Rectangle -> Rectangle(shape.width * factor, shape.height * factor)
+    is Triangle -> shape
+}

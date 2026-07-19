@@ -25,7 +25,7 @@ package ex08
 
 // Apply f to x, then apply f to the result.
 // applyTwice(3) { it + 1 } → 5
-fun applyTwice(x: Int, f: (Int) -> Int): Int = TODO()
+fun applyTwice(x: Int, f: (Int) -> Int): Int = f(f(x))
 
 // Return a new list containing only elements for which predicate returns true.
 // Build it by hand with a loop and a mutableListOf — you are implementing `filter` yourself
@@ -33,12 +33,20 @@ fun applyTwice(x: Int, f: (Int) -> Int): Int = TODO()
 // the point; you'll meet the real thing in ex09.)
 // keepIf(listOf(1,2,3,4)) { it % 2 == 0 } → [2, 4]
 fun <T> keepIf(list: List<T>, predicate: (T) -> Boolean): List<T> {
-    TODO()
+    val result = mutableListOf<T>()
+    for (element in list) {
+        if (predicate(element)) result.add(element)
+    }
+    return result
 }
 
 // Apply f to every element and return the resulting list.
 // Again by hand with a loop — this is `map` built yourself; the stdlib version arrives in ex09.
 // transformAll(listOf("hi", "bye")) { it.uppercase() } → ["HI", "BYE"]
 fun <T, R> transformAll(list: List<T>, f: (T) -> R): List<R> {
-    TODO()
+    val result = mutableListOf<R>()
+    for (element in list) {
+        result.add(f(element))
+    }
+    return result
 }
