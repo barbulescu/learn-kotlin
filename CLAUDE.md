@@ -30,6 +30,8 @@ src/
 1. Create `src/main/kotlin/exNN/Topic.kt` with `TODO()` stubs and a header comment block (theory, Java analogy, doc links).
 2. Create `src/test/kotlin/exNN/TopicTest.kt`.
 
+The `JAVA ANALOGY` header blocks are the core teaching device, not decoration — for the stretch/advanced exercises the code is a one-liner once you know the right function exists, so the analogy (`Collectors.groupingBy` → `groupBy`) carries the entire lesson. Never trim or summarize them.
+
 ## Curriculum
 
 Exercises are ordered by "convince factor" for a 2-hour dojo: core (ex01–ex06) makes the case for Kotlin, stretch (ex07–ex10) fills the second hour, advanced (ex11–ex15) is homework.

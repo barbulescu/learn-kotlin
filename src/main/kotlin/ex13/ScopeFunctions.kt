@@ -33,6 +33,8 @@ fun processInput(input: String?): String = TODO()
 
 // Use `apply` to build and return a HashMap<String, String> containing:
 // "host" → "localhost", "port" → "8080", "debug" → "true"
+// Inside the block, prefer Kotlin's indexed assignment over put():
+//   this["host"] = "localhost"
 fun defaultConfig(): HashMap<String, String> = TODO()
 
 // Use `also` to add a side effect: compute the sum of `numbers`, append "sum=<result>"

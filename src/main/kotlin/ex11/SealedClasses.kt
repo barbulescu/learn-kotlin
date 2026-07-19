@@ -43,6 +43,8 @@ data class Triangle(val base: Double, val height: Double) : Shape()
 
 // Return the area of the shape. Use `when` — the compiler will warn if a branch is missing.
 // Circle: π * r²  |  Rectangle: w * h  |  Triangle: (base * height) / 2
+// For π use `kotlin.math.PI` — yes, Kotlin lets you import a bare top-level constant
+// (`import kotlin.math.PI`), no wrapper class like Java's Math needed.
 fun area(shape: Shape): Double = TODO()
 
 // Return a human-readable description.

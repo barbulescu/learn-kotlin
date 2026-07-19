@@ -34,5 +34,7 @@ fun Int.isEven(): Boolean = TODO()
 
 // Return the number of words (split by one or more whitespace characters).
 // The input always contains at least one word — no need to handle empty or blank strings.
+// Hint: split(Regex("""\s+""")) — Regex is Kotlin's regex class, and triple quotes make a
+// raw string, so the backslash needs no escaping (Java would need "\\s+").
 // "hello world".wordCount() → 2,  "  hi  there  ".wordCount() → 2
 fun String.wordCount(): Int = TODO()
