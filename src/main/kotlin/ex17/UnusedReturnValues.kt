@@ -54,24 +54,20 @@ import java.math.BigDecimal
 // Normalize user input: surrounding whitespace trimmed, everything lowercased.
 //   normalize("  Hello World  ") → "hello world"
 fun normalize(raw: String): String {
-    raw.trim()
-    raw.lowercase()
-    return raw
+    return raw.trim().lowercase()
 }
 
 // The three highest scores, best first.
 //   topThree(listOf(7, 2, 9, 8, 5)) → [9, 8, 7]
 fun topThree(scores: List<Int>): List<Int> {
-    scores.sortedDescending()
-    return scores.take(3)
+    return scores.sortedDescending().take(3)
 }
 
 // The playlist with one track appended at the end. The original must not change —
 // and cannot: List<String> has no add().
 //   withTrack(listOf("Intro", "Verse"), "Outro") → [Intro, Verse, Outro]
 fun withTrack(playlist: List<String>, track: String): List<String> {
-    playlist.plus(track)
-    return playlist
+    return playlist + track
 }
 
 // The sum of the line totals — ex16's grandTotal accumulator, and its worst DANGER
@@ -81,7 +77,7 @@ fun withTrack(playlist: List<String>, track: String): List<String> {
 fun grandTotal(lineTotals: List<BigDecimal>): BigDecimal {
     var total = BigDecimal.ZERO
     for (line in lineTotals) {
-        total + line
+        total += line
     }
     return total
 }

@@ -80,11 +80,11 @@ object Pending : Payment()
 // The stdlib overloads BigDecimal arithmetic, so no .multiply() chain:
 //   unitPrice * quantity.toBigDecimal()
 // LineItem("Widget", 2, BigDecimal("5.00")).lineTotal() → 10.00
-fun LineItem.lineTotal(): BigDecimal = TODO()
+fun LineItem.lineTotal(): BigDecimal = unitPrice * quantity.toBigDecimal()
 
 // Port of OrderUtils.grandTotal — the accumulator loop (with its forgotten-reassignment
 // trap) becomes items.sumOf { }, which has a BigDecimal overload [ex08, ex09].
-fun Order.grandTotal(): BigDecimal = TODO()
+fun Order.grandTotal(): BigDecimal = items.sumOf { it.lineTotal() }
 
 // Port of OrderUtils.contactLine — the if/else becomes one line, and unlike Java the
 // compiler FORCES you to handle null [ex02, ex03, ex13].
@@ -93,14 +93,19 @@ fun Order.grandTotal(): BigDecimal = TODO()
 //   contactLine(Customer("Bob", null))                  → "Bob (no email)"
 // Hint: customer.email?.let { ... } ?: "..."
 // (There is no Kotlin port of contactLineCareless: it doesn't compile here.)
-fun contactLine(customer: Customer): String = TODO()
+fun contactLine(customer: Customer): String =
+    customer.email?.let { "${customer.name} <${it.lowercase()}>" } ?: "${customer.name} (no email)"
 
 // Port of OrderUtils.paymentMessage — exhaustive `when` over the sealed class: no casts,
 // no else, and a missing branch is a COMPILE error, not an IllegalStateException [ex05, ex11].
 //   Paid(BigDecimal("49.99"))                    → "Paid 49.99"
 //   Refunded(BigDecimal("12.50"), "damaged box") → "Refunded 12.50 (damaged box)"
 //   Pending                                      → "Awaiting payment"
-fun paymentMessage(payment: Payment): String = TODO()
+fun paymentMessage(payment: Payment): String = when (payment) {
+    is Paid -> "Paid ${payment.amount}"
+    is Refunded -> "Refunded ${payment.amount} (${payment.reason})"
+    Pending -> "Awaiting payment"
+}
 
 // Port of the THREE receipt overloads + StringBuilder loop: defaults replace the
 // overloads, templates + joinToString replace the appends [ex02, ex06, ex08].
@@ -113,7 +118,11 @@ fun paymentMessage(payment: Payment): String = TODO()
 //   Total: 12.50 EUR
 //   Thank you!
 // Hint: items.joinToString("\n") { ... } for the middle lines.
-fun receipt(order: Order, currency: String = "EUR", footer: String = "Thank you!"): String = TODO()
+fun receipt(order: Order, currency: String = "EUR", footer: String = "Thank you!"): String {
+    val header = "Order #${order.id} for ${order.customer.name}${if (order.customer.vip) " (VIP)" else ""}"
+    val lines = order.items.joinToString("\n") { "${it.quantity} x ${it.product} = ${it.lineTotal()} $currency" }
+    return "$header\n$lines\nTotal: ${order.grandTotal()} $currency\n$footer"
+}
 
 // Port of OrderUtils.bigSpenders — the groupingBy(reducing(ZERO, ..., ::add)) pipeline
 // becomes groupBy + filter + sorted, and compareTo(minimum) >= 0 becomes plain >=
@@ -121,7 +130,11 @@ fun receipt(order: Order, currency: String = "EUR", footer: String = "Thank you!
 // Names of customers whose orders add up to at least `minimum`, sorted A→Z.
 // One customer may have several orders — group first, then sum.
 // Hint: orders.groupBy { it.customer.name }, then filter on the summed totals.
-fun bigSpenders(orders: List<Order>, minimum: BigDecimal = BigDecimal("100")): List<String> = TODO()
+fun bigSpenders(orders: List<Order>, minimum: BigDecimal = BigDecimal("100")): List<String> =
+    orders.groupBy { it.customer.name }
+        .filterValues { customerOrders -> customerOrders.sumOf { it.grandTotal() } >= minimum }
+        .keys
+        .sorted()
 
 // Port of OrderUtils.applyDiscount — but where the Java version mutates the order it
 // was given (read its DANGER comment!), this returns a NEW order and the original
@@ -131,4 +144,7 @@ fun bigSpenders(orders: List<Order>, minimum: BigDecimal = BigDecimal("100")): L
 // Hint: order.copy(items = order.items.map {
 //     it.copy(unitPrice = it.unitPrice * (100 - percentOff).toBigDecimal() / 100.toBigDecimal())
 // })
-fun withDiscount(order: Order, percentOff: Int = 10): Order = TODO()
+fun withDiscount(order: Order, percentOff: Int = 10): Order =
+    order.copy(items = order.items.map {
+        it.copy(unitPrice = it.unitPrice * (100 - percentOff).toBigDecimal() / 100.toBigDecimal())
+    })
