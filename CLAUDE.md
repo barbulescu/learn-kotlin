@@ -21,9 +21,12 @@ The Gradle wrapper is committed and the Foojay toolchain resolver (settings.grad
 
 ```
 src/
-  main/kotlin/exNN/   # stubs with Java analogies and docs
-  test/kotlin/exNN/   # pre-written tests
+  main/kotlin/exNN/         # stubs with Java analogies and docs
+  main/kotlin/ex16/legacy/  # working, annotated legacy Java program (.java) that ex16 refactors to Kotlin
+  test/kotlin/exNN/         # pre-written tests
 ```
+
+The Java files live inside the Kotlin source tree on purpose (legacy sits next to its port); build.gradle.kts adds `src/main/kotlin` to the Java source set to compile them.
 
 ## Adding an Exercise
 
@@ -34,7 +37,9 @@ The `JAVA ANALOGY` header blocks are the core teaching device, not decoration �
 
 ## Curriculum
 
-Exercises are ordered by "convince factor" for a 2-hour dojo: core (ex01–ex06) makes the case for Kotlin, stretch (ex07–ex10) fills the second hour, advanced (ex11–ex15) is homework.
+Exercises are ordered by "convince factor" for a 2-hour dojo: core (ex01–ex06) makes the case for Kotlin, stretch (ex07–ex10) fills the second hour, advanced (ex11–ex15) is homework, and the capstone (ex16) is a refactoring exercise: a working Java program in `src/main/kotlin/ex16/legacy/` (annotated in place with DANGER/CLUTTER comments, money as `BigDecimal`) that the learner ports to Kotlin. Its `LegacyJavaTest` passes from the start by design — the green tests document the Java bugs (NPE, in-place mutation, leaked mutable list); don't "fix" the Java code they test.
+
+ex17 (bonus tier) inverts the house format: its stub is complete-but-buggy code, not `TODO()`s — every function silently drops a return value (`trim`, `sortedDescending`, `plus`), and the tests fail until the learner uses the values. The `-Xreturn-value-checker=check` flag in build.gradle.kts makes the compiler warnings point at exactly the buggy lines; the warnings are the exercise's hint system, so don't "fix" the stub's bugs, and keep the rest of the codebase warning-clean under the checker.
 
 | Exercise | Tier | Concept |
 |----------|------|---------|
@@ -53,3 +58,5 @@ Exercises are ordered by "convince factor" for a 2-hour dojo: core (ex01–ex06)
 | ex13 | advanced | Scope functions: `let`, `apply`, `also`, `run` |
 | ex14 | advanced | Advanced collections: `groupBy`, `partition`, `flatMap`, `zip` |
 | ex15 | advanced | Coroutines: `suspend`, `async`/`await`, `delay`, `coroutineScope` |
+| ex16 | capstone | Everything combined — refactor a working, annotated legacy Java program to Kotlin |
+| ex17 | bonus | Unused return value checker; immutability naming convention (`sorted` vs `sort`) |

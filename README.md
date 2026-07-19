@@ -28,6 +28,8 @@ Exercises are ordered by how strongly they make the case for Kotlin, so just wor
 - **Core (ex01–ex06)** — the "convince me" exercises. Null safety (ex03) and data classes (ex04) are the strongest arguments for Kotlin; everyone should reach them. Core fills the first hour.
 - **Stretch (ex07–ex10)** — idioms that make everyday code shorter. Do as many as time allows in the second hour.
 - **Advanced (ex11–ex15)** — take these home; they're the reward for finishing, not part of the 2-hour session.
+- **Capstone (ex16)** — the closing argument. A working legacy Java program (annotated with its dangers) that you refactor into ~25 lines of Kotlin.
+- **Bonus (ex17)** — a coda for after the capstone: the compiler learns to catch ex16's worst bug class on its own.
 
 ---
 
@@ -178,3 +180,27 @@ A `suspend` function can pause its execution without blocking the underlying thr
 - [Coroutines overview](https://kotlinlang.org/docs/coroutines-overview.html)
 - [Coroutines basics](https://kotlinlang.org/docs/coroutines-basics.html)
 - [Async programming](https://kotlinlang.org/docs/async-programming.html)
+
+---
+
+## Capstone — the closing argument (ex16)
+
+### ex16 · Refactor Java to Kotlin
+
+Nothing new to learn, and no blank stub this time: you start from ~250 lines of real, working Java in `src/main/kotlin/ex16/legacy/` (the legacy program deliberately lives next to its Kotlin port) — a small order-processing domain (customers, orders, payments, receipts) with every problem site annotated in place. The data model is POJOs with mutable setters and hand-rolled `equals`/`hashCode`; the email field is "may be null" per Javadoc only; money is `BigDecimal`, so every price formula is a `.multiply(...).divide(...)` chain; `receipt` has telescoping overloads that let you swap two `String` arguments without a compile error; `paymentMessage` is an `instanceof` chain whose "unreachable" `else` becomes reachable the day someone adds a subtype; `bigSpenders` is a `Collectors.groupingBy(reducing(...))` pipeline; and `applyDiscount` mutates the order it was given. `LegacyJavaTest` *passes from the first run* — its green tests are the bug reports (the NPE, the corrupted order, the double discount, the leaked internal list, `BigDecimal`'s scale-sensitive `equals`). Your job is to port the program to Kotlin in `Capstone.kt` and make `CapstoneTest` pass: ~25 lines combining string templates, null safety, data classes, `when`, default parameters, extension functions, lambdas, collections, sealed classes — and the stdlib's `BigDecimal` operator overloads, which turn the method chains back into arithmetic. Each of the Java landmines is either impossible to write or a compile error in the port.
+
+- [Comparison to Java](https://kotlinlang.org/docs/comparison-to-java.html)
+- [Java-to-Kotlin nullability guide](https://kotlinlang.org/docs/java-to-kotlin-nullability-guide.html)
+- [Java-to-Kotlin collections guide](https://kotlinlang.org/docs/java-to-kotlin-collections-guide.html)
+
+---
+
+## Bonus — after the capstone (ex17)
+
+### ex17 · Unused Return Values & the Immutability Convention
+
+A different kind of exercise: nothing is `TODO()`. The stub compiles and looks finished, but all four functions are wrong the same way — they call functions like `trim()`, `sorted()`, and `plus()` that *return a new value*, and silently drop the result. Kotlin's everyday types are immutable, and its naming convention tells you what returns what — a rule Java never had (`Collections.sort` mutates, `Stream.sorted` returns new): past-participle names (`sorted`, `reversed`) return a new collection; imperative names (`sort`, `reverse`) mutate in place and exist only on `MutableList`. The build enables Kotlin's experimental **unused return value checker** (`-Xreturn-value-checker=check` in build.gradle.kts) — the check Java needs the ErrorProne build plugin for, built into kotlinc — so compiling prints a warning on exactly each broken line. Read the warnings, use the values, make the tests green. The last function is ex16's `total.add(...)` DANGER reborn in Kotlin, caught this time.
+
+- [Unused return value checker](https://kotlinlang.org/docs/unused-return-value-checker.html)
+- [KEEP-0412 proposal](https://github.com/Kotlin/KEEP/blob/main/proposals/KEEP-0412-unused-return-value-checker.md)
+- [Collection ordering](https://kotlinlang.org/docs/collection-ordering.html)

@@ -19,4 +19,16 @@ tasks.test {
 
 kotlin {
     jvmToolchain(21)
+    compilerOptions {
+        // ex17's hint system: warn when the result of a stdlib/@MustUseReturnValues
+        // function is silently dropped (experimental, KEEP-0412).
+        freeCompilerArgs.add("-Xreturn-value-checker=check")
+    }
+}
+
+// ex16's legacy Java program lives alongside the Kotlin sources it gets refactored into.
+sourceSets {
+    main {
+        java.srcDir("src/main/kotlin")
+    }
 }
