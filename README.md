@@ -30,6 +30,7 @@ Exercises are ordered by how strongly they make the case for Kotlin, so just wor
 - **Advanced (ex11–ex15)** — take these home; they're the reward for finishing, not part of the 2-hour session.
 - **Capstone (ex16)** — the closing argument. A working legacy Java program (annotated with its dangers) that you refactor into ~25 lines of Kotlin.
 - **Bonus (ex17)** — a coda for after the capstone: the compiler learns to catch ex16's worst bug class on its own.
+- **Refactor track (ex18–ex24)** — seven mini-capstones for the weeks after: each is one annotated legacy Java file, ported to the Kotlin feature that deletes it.
 
 ---
 
@@ -204,3 +205,61 @@ A different kind of exercise: nothing is `TODO()`. The stub compiles and looks f
 - [Unused return value checker](https://kotlinlang.org/docs/unused-return-value-checker.html)
 - [KEEP-0412 proposal](https://github.com/Kotlin/KEEP/blob/main/proposals/KEEP-0412-unused-return-value-checker.md)
 - [Collection ordering](https://kotlinlang.org/docs/collection-ordering.html)
+
+---
+
+## Refactor track — mini-capstones (ex18–ex24)
+
+Each of these repeats the ex16 formula at small scale: one working, annotated legacy Java file (`src/main/kotlin/exNN/legacy/`), a `LegacyJavaTest` that **passes from the start** — its green tests are the bug reports — and a Kotlin stub whose tests you turn green by porting the Java. Don't fix the Java; delete it with Kotlin.
+
+### ex18 · Exceptions Without the Checking: `use`, `runCatching`
+
+The legacy config loader is shaped entirely by checked exceptions: `throws ParseException` on every signature, a swallowed catch inside the loop that *wanted* to be a lambda (a typo'd line silently vanishes from the result — the green test documents it), and try-with-resources ceremony. Kotlin has no checked exceptions, so lambdas can throw: the unwritable pipeline becomes a one-line `map`, and errors fail loudly instead of vanishing. `use { }` replaces try-with-resources and closes on every exit path; `runCatching { }.getOrDefault(...)` turns the five-line fallback dance into an expression.
+
+- [Exceptions](https://kotlinlang.org/docs/exceptions.html)
+- [Checked exceptions and Java interop](https://kotlinlang.org/docs/java-interop.html#checked-exceptions)
+- [use](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.io/use.html)
+- [runCatching](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/run-catching.html)
+
+### ex19 · Signaling Absence: the `OrNull` Convention
+
+The legacy directory says "not there" in four dialects — throw, `Optional`, null-via-caught-exception, and an unchecked `-1` sentinel that turns a missing `@` into a garbage domain (green test included). Java never picked one; Kotlin's convention is a single sentence: *the plain name throws, the `OrNull` name returns null* — `first`/`firstOrNull`, `toInt`/`toIntOrNull`, all the way through the stdlib. Combined with ex03's operators (`?.`, `?:`), the null-check pyramid collapses to one expression, and `Optional` simply has no role left.
+
+- [Null safety](https://kotlinlang.org/docs/null-safety.html)
+- [Java-to-Kotlin nullability guide](https://kotlinlang.org/docs/java-to-kotlin-nullability-guide.html)
+- [firstOrNull](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/first-or-null.html)
+
+### ex20 · Delegation: the `by` Keyword
+
+Two hand-rolled delegation chores: a decorator that forwards three of its four methods verbatim (and must grow with the interface forever), and lazy initialization via eleven lines of double-checked locking. Class delegation (`: Store by inner`) makes the compiler write the forwarding — your solution *deletes* three overrides and keeps one. Property delegation (`by lazy { }`) makes "compute once, on first use" a single word, thread-safe by default. The tests count loader invocations, so laziness is verified, not assumed.
+
+- [Delegation](https://kotlinlang.org/docs/delegation.html)
+- [Delegated properties](https://kotlinlang.org/docs/delegated-properties.html)
+
+### ex21 · Deleting the Builder
+
+Four fields cost the legacy class ~40 lines of Builder — and the Builder deferred construction, so `build()` happily produces a request with no URL (the NPE is scheduled for later; the green test documents the birth defect). The Kotlin port is a six-line data class: a required parameter with no default makes the missing-URL bug a compile error, named arguments replace the setter chain, `copy()` replaces the hand-rolled "with one change" helper, and `apply { }` covers the mutable config objects you don't own.
+
+- [Default arguments](https://kotlinlang.org/docs/functions.html#default-arguments)
+- [Named arguments](https://kotlinlang.org/docs/functions.html#named-arguments)
+- [copy()](https://kotlinlang.org/docs/data-classes.html#copying)
+- [apply](https://kotlinlang.org/docs/scope-functions.html#apply)
+
+### ex22 · Value Classes: Types for Free
+
+Primitive obsession: every legacy ID is a `String`, so the compiler can't tell a customer from a product — the green test shows the invoice that billed customer "P-7" for 3 units of "C-42". `@JvmInline value class CustomerId(val raw: String)` is a compile-time-only wrapper: zero allocation in the bytecode, a distinct type in the compiler, structural equality for free. The swapped-argument call *cannot appear in the tests, because it no longer compiles* — that absence is the lesson. Factories returning `CustomerId?` (ex19's convention) upgrade "looks valid" to parse-don't-validate.
+
+- [Inline value classes](https://kotlinlang.org/docs/inline-classes.html)
+
+### ex23 · Sequences: Laziness on Demand
+
+The legacy pipeline finds the first long word by uppercasing *everything* into one intermediate list, filtering *everything* into another, and taking element zero — the green test counts all five visits when the answer sat at index 2. `.asSequence()` runs the same pipeline lazily: elements flow one at a time and `firstOrNull` stops the line, which the Kotlin-side test enforces by counting your visits too (exactly three). `generateSequence` handles infinite spaces; and the counterpoint stands in the same file — a small list consumed whole wants plain eager operators, no ceremony.
+
+- [Sequences](https://kotlinlang.org/docs/sequences.html)
+
+### ex24 · From CompletableFuture to Coroutines
+
+The closer. Legacy async composition needs a combinator vocabulary — `thenApply` to map, `thenCompose` to chain, `thenCombine` to merge — plus a blocking `.get()` wrapped in two checked exceptions to ever leave future-land. In the port, sequential async code is just sequential code (call the suspend function, use the value on the next line), and parallel composition is two `async` blocks awaited inside `coroutineScope { }` with cancellation built in. The test runs on kotlinx-coroutines-test's virtual clock and reads `currentTime`: two 100 ms fetches must total 100 ms, so only a genuinely concurrent port passes.
+
+- [Composing suspending functions](https://kotlinlang.org/docs/composing-suspending-functions.html)
+- [Coroutines basics](https://kotlinlang.org/docs/coroutines-basics.html)
